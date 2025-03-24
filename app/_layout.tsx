@@ -1,8 +1,8 @@
 import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { tokenCache } from '@clerk/clerk-expo/token-cache';
 import { Stack, usePathname, useRouter, useSegments } from 'expo-router';
-import { useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, StatusBar, View } from 'react-native';
 import './globals.css';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
@@ -41,9 +41,13 @@ const InitialLayout = () => {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name='index' options={{ headerShown: false }} />
-    </Stack>
+    <>
+      <StatusBar backgroundColor={'#1E1E1E'} barStyle={'light-content'} />
+      <Stack>
+        <Stack.Screen name='index' options={{ headerShown: false }} />
+        <Stack.Screen name='(auth)' options={{ headerShown: false }} />
+      </Stack>
+    </>
   );
 };
 
