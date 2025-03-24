@@ -1,39 +1,64 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
+import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/clerk-expo';
+import { tokenCache } from '@clerk/clerk-expo/token-cache';
+import { Stack, usePathname, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { ActivityIndicator, View } from 'react-native';
+import './globals.css';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+if (!publishableKey) {
+  throw new Error(
+    'Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env'
+  );
+}
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+const InitialLayout = () => {
+  const router = useRouter();
+  const { isLoaded, isSignedIn } = useAuth();
+  const pathname = usePathname();
+  const segments = useSegments();
 
+  // UseEffect to check for signed in user
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
+    if (!isLoaded) return;
 
-  if (!loaded) {
-    return null;
+    const inAuthGroup = segments[0] === '(auth)';
+
+    if (isSignedIn && !inAuthGroup) {
+      router.replace('/(auth)');
+    } else if (!isSignedIn && pathname !== '/') {
+      router.replace('/');
+    }
+  }, [isSignedIn, isLoaded]);
+
+  if (!isLoaded) {
+    return (
+      <View className='flex-1 justify-center items-center'>
+        <Loading />
+      </View>
+    );
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack>
+      <Stack.Screen name='index' options={{ headerShown: false }} />
+    </Stack>
   );
-}
+};
+
+const RootLayout = () => {
+  return (
+    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+      <ClerkLoaded>
+        <InitialLayout />
+      </ClerkLoaded>
+    </ClerkProvider>
+  );
+};
+
+const Loading = () => {
+  return <ActivityIndicator size={'large'} color={'#B2860C'} />;
+};
+
+export default RootLayout;
