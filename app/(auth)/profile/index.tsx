@@ -9,7 +9,7 @@ const Profile = () => {
   return (
     <View>
       <Text className='text-white'>{user?.firstName}</Text>
-      <Text className='text-white'>{user?.emailAddresses[0].emailAddress}</Text>
+       <Text className='text-white'>{user?.emailAddresses[0].emailAddress}</Text>
       <Button title='Sign out' onPress={() => signOut} />
     </View>
   );
