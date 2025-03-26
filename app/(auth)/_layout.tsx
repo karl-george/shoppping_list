@@ -1,11 +1,8 @@
-import { Stack, useRouter } from 'expo-router';
+import DropDownMenuComponent from '@/components/DropDownMenu';
+import { Stack } from 'expo-router';
 import React from 'react';
-import { Text, View } from 'react-native';
-import * as DropdownMenu from 'zeego/dropdown-menu';
 
 const Layout = () => {
-  const router = useRouter();
-
   return (
     <Stack screenOptions={{ contentStyle: { backgroundColor: '#121212' } }}>
       <Stack.Screen
@@ -15,23 +12,7 @@ const Layout = () => {
           headerTitleAlign: 'center',
           headerStyle: { backgroundColor: '#1E1E1E' },
           headerTitleStyle: { color: 'white' },
-          headerRight: () => (
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger>
-                <Text className='text-3xl text-white rotate-90'>...</Text>
-              </DropdownMenu.Trigger>
-
-              <DropdownMenu.Content>
-                <DropdownMenu.Item
-                  key='profile'
-                  className='bg-bg'
-                  onSelect={() => router.push('/profile')}
-                >
-                  <DropdownMenu.ItemTitle>Profile</DropdownMenu.ItemTitle>
-                </DropdownMenu.Item>
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
-          ),
+          headerRight: () => <DropDownMenuComponent />,
         }}
       />
       <Stack.Screen name='profile/index' options={{ headerShown: false }} />
