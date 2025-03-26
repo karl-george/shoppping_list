@@ -1,7 +1,28 @@
-import { View, Text } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import React from 'react';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import DropDownMenuComponent from '@/components/DropDownMenu';
+import { Product } from '@/types';
+import ItemCard from '@/components/ItemCard';
+
+const dummydata: Product[] = [
+  {
+    id: 1,
+    name: 'strawberries',
+    isChecked: false,
+    quantity: 1,
+    date_added: '123',
+    date_updated: '123',
+  },
+  {
+    id: 2,
+    name: 'oranges',
+    isChecked: false,
+    quantity: 1,
+    date_added: '123',
+    date_updated: '123',
+  },
+];
 
 const Page = () => {
   const { id } = useLocalSearchParams();
@@ -17,9 +38,13 @@ const Page = () => {
           headerRight: () => <DropDownMenuComponent />,
         }}
       />
-      <View>
-        <View></View>
-      </View>
+      <FlatList
+        contentContainerClassName='mt-4'
+        data={dummydata}
+        renderItem={({ item }) => <ItemCard {...item} />}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={{ padding: 16, gap: 16 }}
+      />
     </>
   );
 };
