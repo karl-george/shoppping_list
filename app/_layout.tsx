@@ -26,7 +26,7 @@ const InitialLayout = () => {
     const inAuthGroup = segments[0] === '(auth)';
 
     if (isSignedIn && !inAuthGroup) {
-      router.replace('/(auth)');
+      router.replace('/(auth)/home/index');
     } else if (!isSignedIn && pathname !== '/') {
       router.replace('/');
     }
@@ -34,7 +34,7 @@ const InitialLayout = () => {
 
   if (!isLoaded) {
     return (
-      <View className='flex-1 justify-center items-center'>
+      <View className='items-center justify-center flex-1'>
         <Loading />
       </View>
     );
