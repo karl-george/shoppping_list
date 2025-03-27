@@ -1,32 +1,15 @@
 import { Product } from '@/types';
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import React, { useRef, useState } from 'react';
+import { Pressable, Text, View } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import ReanimatedSwipeable, {
   SwipeableMethods,
 } from 'react-native-gesture-handler/ReanimatedSwipeable';
-import {
+import Reanimated, {
   SharedValue,
   useAnimatedStyle,
-  useSharedValue,
 } from 'react-native-reanimated';
-import Reanimated from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
-
-function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
-  // const styleAnimation = useAnimatedStyle(() => {
-  //   console.log('showRightProgress:', prog.value);
-  //   console.log('appliedTranslation:', drag.value);
-  //   return {
-  //     transform: [{ translateX: drag.value + 50 }],
-  //   };
-  // });
-  // return (
-  //   <Reanimated.View style={styleAnimation}>
-  //     <Text>Text</Text>
-  //   </Reanimated.View>
-  // );
-}
 
 const ItemCard = ({
   id,
@@ -37,34 +20,74 @@ const ItemCard = ({
   date_updated,
 }: Product) => {
   const [checked, setChecked] = useState<boolean>(false);
+  const reanimatedRef = useRef<SwipeableMethods>(null);
+
+  const markAsComplete = () => {
+    // TODO: Update the product in the database
+  };
+
+  const RightAction = (
+    prog: SharedValue<number>,
+    drag: SharedValue<number>
+  ) => {
+    const styleAnimation = useAnimatedStyle(() => ({
+      transform: [{ translateX: drag.value + 200 }],
+    }));
+
+    return (
+      <Pressable
+        onPress={handleDelete}
+        className='items-center justify-center w-40 h-full bg-red-500 rounded-md'
+      >
+        <Reanimated.View
+          style={styleAnimation}
+          className='items-start justify-center w-full h-full'
+        >
+          <Ionicons name='trash-outline' size={24} color='white' />
+        </Reanimated.View>
+      </Pressable>
+    );
+  };
+
+  const handleDelete = () => {
+    console.log('delete');
+  };
 
   return (
-    <Reanimated.View className='flex-row p-4 rounded-md bg-bgItem'>
+    <Reanimated.View>
       <ReanimatedSwipeable
-      // friction={2}
-      // rightThreshold={100}
-      // renderRightActions={RightAction}
+        ref={reanimatedRef}
+        friction={2}
+        enableTrackpadTwoFingerGesture
+        rightThreshold={40}
+        renderRightActions={RightAction}
+        overshootRight={false}
+        enableContextMenu
       >
-        <BouncyCheckbox
-          isChecked={checked}
-          onPress={() => setChecked((prevState) => !prevState)}
-          size={25}
-          iconStyle={{ borderRadius: 4 }}
-          innerIconStyle={{ borderRadius: 4 }}
-          //! Edit fillColor if a different accent colour is needed
-          fillColor='#B2860C'
-          textComponent={
-            <Text
-              className={
-                !checked
-                  ? 'ml-3 text-lg text-white capitalize'
-                  : 'ml-3 text-lg text-textFaded capitalize line-through'
+        <View className='flex-row w-full p-4 rounded-md bg-bgItem'>
+          <View>
+            <BouncyCheckbox
+              isChecked={checked}
+              onPress={() => setChecked((prevState) => !prevState)}
+              size={25}
+              iconStyle={{ borderRadius: 4 }}
+              innerIconStyle={{ borderRadius: 4 }}
+              //! Edit fillColor if a different accent colour is needed
+              fillColor='#B2860C'
+              textComponent={
+                <Text
+                  className={
+                    !checked
+                      ? 'ml-3 text-lg text-white capitalize'
+                      : 'ml-3 text-lg text-textFaded capitalize line-through'
+                  }
+                >
+                  {name}
+                </Text>
               }
-            >
-              {name}
-            </Text>
-          }
-        />
+            />
+          </View>
+        </View>
       </ReanimatedSwipeable>
     </Reanimated.View>
   );
