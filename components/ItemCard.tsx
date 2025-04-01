@@ -37,7 +37,7 @@ const ItemCard = ({
     return (
       <Pressable
         onPress={handleDelete}
-        className='items-center justify-center w-40 h-full bg-red-500 rounded-md'
+        className='items-center justify-center w-40 h-full rounded-md bg-accent'
       >
         <Reanimated.View
           style={styleAnimation}
@@ -62,7 +62,6 @@ const ItemCard = ({
         rightThreshold={40}
         renderRightActions={RightAction}
         overshootRight={false}
-        enableContextMenu
       >
         <View className='flex-row w-full p-4 rounded-md bg-bgItem'>
           <View>
