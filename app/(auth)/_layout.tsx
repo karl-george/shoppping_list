@@ -15,6 +15,15 @@ const Layout = () => {
           headerRight: () => <DropDownMenuComponent />,
         }}
       />
+      <Stack.Screen
+        name='home/new-list'
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.5, 1],
+          animation: 'slide_from_bottom',
+          contentStyle: { backgroundColor: '#1E1E1E' },
+        }}
+      />
       <Stack.Screen name='profile/index' options={{ headerShown: false }} />
     </Stack>
   );
