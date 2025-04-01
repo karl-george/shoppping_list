@@ -16,6 +16,15 @@ const Layout = () => {
         }}
       />
       <Stack.Screen
+        name='home/color-select'
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.52, 1],
+          animation: 'slide_from_bottom',
+          contentStyle: { backgroundColor: '#1E1E1E' },
+        }}
+      />
+      <Stack.Screen
         name='home/new-list'
         options={{
           presentation: 'formSheet',
@@ -28,7 +37,7 @@ const Layout = () => {
         name='list/new'
         options={{
           presentation: 'formSheet',
-          sheetAllowedDetents: [0.35, 1],
+          sheetAllowedDetents: [0.25, 1],
           animation: 'slide_from_bottom',
           contentStyle: { backgroundColor: '#1E1E1E' },
         }}
