@@ -1,9 +1,10 @@
 import { View, Text, FlatList } from 'react-native';
 import React from 'react';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import DropDownMenuComponent from '@/components/DropDownMenu';
 import { Product } from '@/types';
 import ItemCard from '@/components/ItemCard';
+import Fab from '@/components/Fab';
 
 const dummydata: Product[] = [
   {
@@ -26,6 +27,12 @@ const dummydata: Product[] = [
 
 const Page = () => {
   const { id } = useLocalSearchParams();
+  const router = useRouter();
+
+  const handlePress = () => {
+    router.push('/list/new');
+  };
+
   return (
     <>
       <Stack.Screen
@@ -45,6 +52,7 @@ const Page = () => {
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ padding: 16, gap: 16 }}
       />
+      <Fab onPress={handlePress} />
     </>
   );
 };
