@@ -1,10 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useMMKVString } from 'react-native-mmkv';
 
 const Page = () => {
   const router = useRouter();
+  const [selectedColor, selectSelectedColor] = useMMKVString('selectedColor');
 
   return (
     <View className='px-4 mt-4'>
@@ -27,7 +29,11 @@ const Page = () => {
       {/* Icon and Colour picker */}
       <View className='flex-row mt-6'>
         <View className='w-8 h-8 bg-red-600'></View>
-        <View className='w-8 h-8 bg-yellow-600'></View>
+        <TouchableOpacity
+          className='w-8 h-8 bg-yellow-600'
+          onPress={() => router.push('/home/color-select')}
+          style={{ backgroundColor: selectedColor ? selectedColor : 'red' }}
+        />
       </View>
 
       {/* Create Button */}
