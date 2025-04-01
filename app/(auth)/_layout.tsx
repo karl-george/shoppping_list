@@ -19,7 +19,16 @@ const Layout = () => {
         name='home/new-list'
         options={{
           presentation: 'formSheet',
-          sheetAllowedDetents: [0.5, 1],
+          sheetAllowedDetents: [0.35, 1],
+          animation: 'slide_from_bottom',
+          contentStyle: { backgroundColor: '#1E1E1E' },
+        }}
+      />
+      <Stack.Screen
+        name='list/new'
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.35, 1],
           animation: 'slide_from_bottom',
           contentStyle: { backgroundColor: '#1E1E1E' },
         }}
