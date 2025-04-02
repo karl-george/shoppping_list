@@ -25,10 +25,19 @@ const Layout = () => {
         }}
       />
       <Stack.Screen
+        name='home/icon-select'
+        options={{
+          presentation: 'formSheet',
+          sheetAllowedDetents: [0.52, 1],
+          animation: 'slide_from_bottom',
+          contentStyle: { backgroundColor: '#1E1E1E' },
+        }}
+      />
+      <Stack.Screen
         name='home/new-list'
         options={{
           presentation: 'formSheet',
-          sheetAllowedDetents: [0.35, 1],
+          sheetAllowedDetents: [0.38, 1],
           animation: 'slide_from_bottom',
           contentStyle: { backgroundColor: '#1E1E1E' },
         }}
@@ -42,7 +51,16 @@ const Layout = () => {
           contentStyle: { backgroundColor: '#1E1E1E' },
         }}
       />
-      <Stack.Screen name='profile/index' options={{ headerShown: false }} />
+      <Stack.Screen
+        name='profile/index'
+        options={{
+          title: 'Profile',
+          headerTitleAlign: 'center',
+          headerStyle: { backgroundColor: '#1E1E1E' },
+          headerTitleStyle: { color: 'white' },
+          headerTintColor: 'white',
+        }}
+      />
     </Stack>
   );
 };
