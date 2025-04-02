@@ -39,7 +39,7 @@ const Page = () => {
   }));
 
   const handlePress = () => {
-    router.push('/list/new');
+    router.push(`/list/new/${id}`);
   };
 
   return (
