@@ -43,10 +43,10 @@ const Layout = () => {
         }}
       />
       <Stack.Screen
-        name='list/new'
+        name='list/new/[id]'
         options={{
           presentation: 'formSheet',
-          sheetAllowedDetents: [0.25, 1],
+          sheetAllowedDetents: [0.25, 0.62],
           animation: 'slide_from_bottom',
           contentStyle: { backgroundColor: '#1E1E1E' },
         }}
