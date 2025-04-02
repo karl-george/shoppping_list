@@ -1,7 +1,8 @@
 import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { tokenCache } from '@clerk/clerk-expo/token-cache';
 import { Stack, usePathname, useRouter, useSegments } from 'expo-router';
-import React, { useEffect } from 'react';
+import { SQLiteProvider } from 'expo-sqlite';
+import React, { Suspense, useEffect } from 'react';
 import { ActivityIndicator, StatusBar, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import './globals.css';
@@ -56,9 +57,13 @@ const RootLayout = () => {
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <ClerkLoaded>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <InitialLayout />
-        </GestureHandlerRootView>
+        <Suspense fallback={<Loading />}>
+          <SQLiteProvider databaseName='shopping_list' useSuspense>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <InitialLayout />
+            </GestureHandlerRootView>
+          </SQLiteProvider>
+        </Suspense>
       </ClerkLoaded>
     </ClerkProvider>
   );
