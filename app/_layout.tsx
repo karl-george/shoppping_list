@@ -1,11 +1,15 @@
 import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { tokenCache } from '@clerk/clerk-expo/token-cache';
+import { drizzle } from 'drizzle-orm/expo-sqlite';
+import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import { Stack, usePathname, useRouter, useSegments } from 'expo-router';
-import { SQLiteProvider } from 'expo-sqlite';
+import { openDatabaseSync, SQLiteProvider } from 'expo-sqlite';
 import React, { Suspense, useEffect } from 'react';
 import { ActivityIndicator, StatusBar, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import migrations from '@/drizzle/migrations';
 import './globals.css';
+import { addDummyData } from '@/utils/addDummyData';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -54,11 +58,27 @@ const InitialLayout = () => {
 };
 
 const RootLayout = () => {
+  const expoDB = openDatabaseSync('shopping_list');
+  const db = drizzle(expoDB);
+  const { success, error } = useMigrations(db, migrations);
+
+  useEffect(() => {
+    if (!success) return;
+
+    //TODO: Delete addDummyData when test passes
+    addDummyData(db);
+    console.log('🚀 ~ Adding dummy data');
+  }, [success]);
+
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <ClerkLoaded>
         <Suspense fallback={<Loading />}>
-          <SQLiteProvider databaseName='shopping_list' useSuspense>
+          <SQLiteProvider
+            databaseName='shopping_list'
+            useSuspense
+            options={{ enableChangeListener: true }}
+          >
             <GestureHandlerRootView style={{ flex: 1 }}>
               <InitialLayout />
             </GestureHandlerRootView>
