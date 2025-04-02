@@ -3,11 +3,11 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-const ShoppingListCard = ({ name, icon, color }: ShoppingLists) => {
+const ShoppingListCard = ({ id, name, icon, color }: ShoppingLists) => {
   const router = useRouter();
 
   return (
-    <TouchableOpacity onPress={() => router.push(`/list/${name}`)}>
+    <TouchableOpacity onPress={() => router.push(`/list/${id}`)}>
       <View className='flex-row items-center gap-3'>
         <View
           className='flex items-center justify-center w-12 h-12 rounded-md'
