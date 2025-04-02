@@ -1,3 +1,4 @@
+import { icons } from '@/constants/Icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
@@ -6,7 +7,10 @@ import { useMMKVString } from 'react-native-mmkv';
 
 const Page = () => {
   const router = useRouter();
-  const [selectedColor, selectSelectedColor] = useMMKVString('selectedColor');
+  const [selectedColor, setSelectedColor] = useMMKVString('selectedColor');
+  const [selectedIcon, setSelectedIcon] = useMMKVString('selectedIcon');
+
+  if (!selectedIcon) setSelectedIcon(icons[0]);
 
   return (
     <View className='px-4 mt-4'>
@@ -18,22 +22,34 @@ const Page = () => {
         </TouchableOpacity>
       </View>
       {/* Text Input */}
-      <View className='p-4 mt-8 rounded-md bg-bg'>
+      <Text className='mt-8 text-lg text-white'>List Name</Text>
+      <View className='p-4 mt-2 rounded-md bg-bg'>
         <TextInput
-          placeholder='List Name'
+          placeholder='Enter your list name...'
           placeholderTextColor={'#716F6F'}
           className='text-white'
         />
       </View>
 
       {/* Icon and Colour picker */}
-      <View className='flex-row mt-6'>
-        <View className='w-8 h-8 bg-red-600'></View>
-        <TouchableOpacity
-          className='w-8 h-8 bg-yellow-600'
-          onPress={() => router.push('/home/color-select')}
-          style={{ backgroundColor: selectedColor ? selectedColor : 'red' }}
-        />
+      <View className='flex-row items-center justify-center gap-10 mt-6'>
+        <View className='flex-row items-center'>
+          <Text className='text-lg text-white'>Icon:</Text>
+          <TouchableOpacity
+            className='w-12 h-12 rounded-full'
+            onPress={() => router.push('/home/icon-select')}
+          >
+            <Text className='text-4xl'>{selectedIcon}</Text>
+          </TouchableOpacity>
+        </View>
+        <View className='flex-row items-center'>
+          <Text className='text-lg text-white'>Color:</Text>
+          <TouchableOpacity
+            className='w-12 h-12 ml-2 rounded-full'
+            onPress={() => router.push('/home/color-select')}
+            style={{ backgroundColor: selectedColor ? selectedColor : 'red' }}
+          />
+        </View>
       </View>
 
       {/* Create Button */}
