@@ -1,38 +1,31 @@
 import Fab from '@/components/Fab';
 import ShoppingListCard from '@/components/ShoppingListCard';
+import { lists } from '@/db/schema';
+import { drizzle, useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import { useRouter } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
 import React from 'react';
 import { FlatList, View } from 'react-native';
 
 const Page = () => {
+  const db = useSQLiteContext();
+  const drizzleDb = drizzle(db);
+  useDrizzleStudio(db);
+
+  const { data } = useLiveQuery(drizzleDb.select().from(lists));
+
   const router = useRouter();
 
   const handleFab = () => {
     router.push('/home/new-list');
   };
 
-  const dummyData = [
-    {
-      id: 1,
-      name: 'Big list of food',
-      products: [],
-      emoji: '🍕',
-      color: '#157E1C',
-    },
-    {
-      id: 2,
-      name: 'Small list of food',
-      products: [],
-      emoji: '🥫',
-      color: '#32288D',
-    },
-  ];
-
   return (
     <>
       <FlatList
         contentContainerClassName='mt-4'
-        data={dummyData}
+        data={data}
         renderItem={({ item }) => <ShoppingListCard {...item} />}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ padding: 16, gap: 16 }}
