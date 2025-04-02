@@ -1,11 +1,10 @@
 export interface ShoppingLists {
   id: number;
   name: string;
-  products: Product[];
-  emoji: string;
+  icon: string;
   color: string;
-  date_added?: string;
-  date_updated?: string;
+  date_added?: number;
+  date_updated?: number;
 }
 
 export interface Product {
@@ -13,6 +12,6 @@ export interface Product {
   name: string;
   isChecked?: boolean;
   quantity?: number;
-  date_added?: string;
-  date_updated?: string;
+  date_added?: number;
+  date_updated?: number;
 }
