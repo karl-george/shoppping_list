@@ -1,31 +1,43 @@
+import { LIST_COLORS } from '@/constants/Colors';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-import ColorPicker, { Panel5 } from 'reanimated-color-picker';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { useMMKVString } from 'react-native-mmkv';
 
 const Page = () => {
-  const [selectedColor, selectSelectedColor] = useMMKVString('selectedColor');
+  const [selectedColor, setSelectedColor] = useMMKVString('selectedColor');
+  const router = useRouter();
 
-  const onSelectColor = ({ hex }: { hex: string }) => {
-    'worklet';
-    console.log(hex);
-    selectSelectedColor(hex);
-  };
   return (
     <View className='px-4 mt-4'>
-      <ColorPicker
-        value='red'
-        onComplete={onSelectColor}
-        style={{
-          width: '100%',
-        }}
-      >
-        <Panel5 />
-      </ColorPicker>
-
-      <TouchableOpacity className='self-center justify-center w-48 p-4 mt-8 rounded-md bg-accent'>
-        <Text className='text-lg text-center text-white'>Confirm</Text>
-      </TouchableOpacity>
+      <View className='flex-row items-center justify-center'>
+        <Text className='text-xl text-white'>Pick a Background Color</Text>
+        <TouchableOpacity onPress={router.back} className='absolute right-0'>
+          <Ionicons name='close' size={28} color={'white'} />
+        </TouchableOpacity>
+      </View>
+      <FlatList
+        data={LIST_COLORS}
+        numColumns={4}
+        contentContainerStyle={{ gap: 16 }}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
+        className='mt-8'
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => {
+              setSelectedColor(item);
+              router.back();
+            }}
+          >
+            <View
+              className='flex-wrap items-center justify-center w-20 h-20 rounded-full'
+              style={{ backgroundColor: item }}
+            />
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item}
+      />
     </View>
   );
 };
