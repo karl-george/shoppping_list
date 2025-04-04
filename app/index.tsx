@@ -1,8 +1,9 @@
 import { useSSO } from '@clerk/clerk-expo';
+import { Ionicons } from '@expo/vector-icons';
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import { useCallback, useEffect } from 'react';
-import { Button, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 export const useWarmUpBrowser = () => {
   useEffect(() => {
@@ -65,9 +66,27 @@ export default function Index() {
   }, []);
 
   return (
-    <View>
-      <Button title='Sign in with Google' onPress={handleGoogleSignIn} />
-      <Button title='Sign in with Apple' onPress={handleAppleSignIn} />
+    <View className='items-center justify-center flex-1 gap-4 bg-[#D2A785]'>
+      <Image
+        source={require('@/assets/images/splash.jpg')}
+        className='w-[98%] mt-24 rounded-full h-3/5'
+        resizeMode='cover'
+      />
+
+      <TouchableOpacity
+        className='flex-row items-center justify-center w-3/4 h-16 gap-3 p-4 rounded-md bg-bgItem'
+        onPress={handleGoogleSignIn}
+      >
+        <Ionicons name='logo-google' size={20} color='white' />
+        <Text className='text-lg text-white'>Continue with Google</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        className='flex-row items-center justify-center w-3/4 h-16 gap-3 p-4 rounded-md bg-bgItem'
+        onPress={handleAppleSignIn}
+      >
+        <Ionicons name='logo-apple' size={22} color='white' />
+        <Text className='text-lg text-white'>Continue with Apple</Text>
+      </TouchableOpacity>
     </View>
   );
 }
