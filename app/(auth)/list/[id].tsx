@@ -34,7 +34,6 @@ const Page = () => {
 
   const transformedItems: Product[] = listItems.map((item) => ({
     ...item,
-    isChecked: Boolean(item.isChecked),
     quantity: 1, // Adding default quantity since it's optional in the Product type
   }));
 
