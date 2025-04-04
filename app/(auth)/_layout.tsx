@@ -37,7 +37,7 @@ const Layout = () => {
         name='home/new-list'
         options={{
           presentation: 'formSheet',
-          sheetAllowedDetents: [0.38, 1],
+          sheetAllowedDetents: [0.38, 0.76],
           animation: 'slide_from_bottom',
           contentStyle: { backgroundColor: '#1E1E1E' },
         }}
