@@ -1,3 +1,4 @@
+import migrations from '@/drizzle/migrations';
 import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { tokenCache } from '@clerk/clerk-expo/token-cache';
 import { drizzle } from 'drizzle-orm/expo-sqlite';
@@ -7,9 +8,7 @@ import { openDatabaseSync, SQLiteProvider } from 'expo-sqlite';
 import React, { Suspense, useEffect } from 'react';
 import { ActivityIndicator, StatusBar, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import migrations from '@/drizzle/migrations';
 import './globals.css';
-import { addDummyData } from '@/utils/addDummyData';
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -61,14 +60,6 @@ const RootLayout = () => {
   const expoDB = openDatabaseSync('shopping_list');
   const db = drizzle(expoDB);
   const { success, error } = useMigrations(db, migrations);
-
-  useEffect(() => {
-    if (!success) return;
-
-    //TODO: Delete addDummyData when test passes
-    addDummyData(db);
-    console.log('🚀 ~ Adding dummy data');
-  }, [success]);
 
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
