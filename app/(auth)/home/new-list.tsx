@@ -19,8 +19,6 @@ const Page = () => {
 
   if (!selectedIcon) setSelectedIcon(icons[0]);
 
-  // TODO: Handle deleting a list and all of the items inside of it
-
   const createList = async () => {
     await drizzleDb.insert(lists).values({
       name: value,
