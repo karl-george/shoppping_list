@@ -20,9 +20,8 @@ const Page = () => {
       <FlatList
         data={LIST_COLORS}
         numColumns={4}
-        contentContainerStyle={{ gap: 16 }}
+        contentContainerStyle={{ gap: 16, paddingTop: 38, paddingBottom: 38 }}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
-        className='mt-8'
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {

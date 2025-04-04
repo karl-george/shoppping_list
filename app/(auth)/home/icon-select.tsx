@@ -21,9 +21,8 @@ const Page = () => {
         data={icons}
         numColumns={4}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ gap: 18 }}
+        contentContainerStyle={{ gap: 18, paddingTop: 38, paddingBottom: 38 }}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
-        className='mt-8'
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
