@@ -1,5 +1,9 @@
+import { items } from '@/db/schema';
 import { Product } from '@/types';
 import { Ionicons } from '@expo/vector-icons';
+import { eq } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/expo-sqlite';
+import { useSQLiteContext } from 'expo-sqlite';
 import React, { useRef, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
@@ -11,20 +15,12 @@ import Reanimated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 
-const ItemCard = ({
-  id,
-  name,
-  isChecked,
-  quantity,
-  date_added,
-  date_updated,
-}: Product) => {
+const ItemCard = ({ id, name, isChecked }: Product) => {
+  const db = useSQLiteContext();
+  const drizzleDb = drizzle(db);
+
   const [checked, setChecked] = useState<boolean>(false);
   const reanimatedRef = useRef<SwipeableMethods>(null);
-
-  const markAsComplete = () => {
-    // TODO: Update the product in the database
-  };
 
   const RightAction = (
     prog: SharedValue<number>,
@@ -49,8 +45,22 @@ const ItemCard = ({
     );
   };
 
-  const handleDelete = () => {
-    console.log('delete');
+  const handleDelete = async () => {
+    await drizzleDb.delete(items).where(eq(items.id, id));
+  };
+
+  const markAsComplete = async () => {
+    if (isChecked === 1) {
+      await drizzleDb
+        .update(items)
+        .set({ isChecked: 0 })
+        .where(eq(items.id, id));
+    } else {
+      await drizzleDb
+        .update(items)
+        .set({ isChecked: 1 })
+        .where(eq(items.id, id));
+    }
   };
 
   return (
@@ -66,8 +76,8 @@ const ItemCard = ({
         <View className='flex-row w-full p-4 rounded-md bg-bgItem'>
           <View>
             <BouncyCheckbox
-              isChecked={checked}
-              onPress={() => setChecked((prevState) => !prevState)}
+              isChecked={isChecked === 1}
+              onPress={markAsComplete}
               size={25}
               iconStyle={{ borderRadius: 4 }}
               innerIconStyle={{ borderRadius: 4 }}
@@ -76,7 +86,7 @@ const ItemCard = ({
               textComponent={
                 <Text
                   className={
-                    !checked
+                    isChecked === 0
                       ? 'ml-3 text-lg text-white capitalize'
                       : 'ml-3 text-lg text-textFaded capitalize line-through'
                   }
