@@ -8,7 +8,7 @@ import { drizzle, useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
 const Page = () => {
   const db = useSQLiteContext();
@@ -54,11 +54,20 @@ const Page = () => {
         }}
       />
       <FlatList
-        contentContainerClassName='mt-4'
+        contentContainerClassName='mt-4 flex-1'
         data={transformedItems}
         renderItem={({ item }) => <ItemCard {...item} />}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ padding: 16, gap: 16 }}
+        ListEmptyComponent={() => (
+          <View className='items-center justify-center h-full -mt-4'>
+            <TouchableOpacity onPress={() => router.push(`/list/new/${id}`)}>
+              <Text className='text-2xl text-accent'>
+                Get started adding products
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       />
       <Fab onPress={handlePress} />
     </>
