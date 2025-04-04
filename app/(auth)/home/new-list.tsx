@@ -1,16 +1,36 @@
 import { icons } from '@/constants/Icons';
+import { lists } from '@/db/schema';
 import { Ionicons } from '@expo/vector-icons';
+import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import { useSQLiteContext } from 'expo-sqlite';
+import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useMMKVString } from 'react-native-mmkv';
 
 const Page = () => {
-  const router = useRouter();
+  const db = useSQLiteContext();
+  const drizzleDb = drizzle(db);
+
+  const [value, setValue] = useState<string>('');
   const [selectedColor, setSelectedColor] = useMMKVString('selectedColor');
   const [selectedIcon, setSelectedIcon] = useMMKVString('selectedIcon');
+  const router = useRouter();
 
   if (!selectedIcon) setSelectedIcon(icons[0]);
+
+  // TODO: Handle deleting a list and all of the items inside of it
+
+  const createList = async () => {
+    await drizzleDb.insert(lists).values({
+      name: value,
+      icon: selectedIcon || icons[0],
+      color: selectedColor || '#123421',
+      date_added: Date.now(),
+      date_updated: Date.now(),
+    });
+    router.back();
+  };
 
   return (
     <View className='px-4 mt-4'>
@@ -28,6 +48,8 @@ const Page = () => {
           placeholder='Enter your list name...'
           placeholderTextColor={'#716F6F'}
           className='text-white'
+          value={value}
+          onChangeText={setValue}
         />
       </View>
 
@@ -53,7 +75,10 @@ const Page = () => {
       </View>
 
       {/* Create Button */}
-      <TouchableOpacity className='self-center justify-center w-48 p-4 mt-8 rounded-md bg-accent'>
+      <TouchableOpacity
+        className='self-center justify-center w-48 p-4 mt-8 rounded-md bg-accent'
+        onPress={createList}
+      >
         <Text className='text-lg text-center text-white'>Confirm</Text>
       </TouchableOpacity>
     </View>
