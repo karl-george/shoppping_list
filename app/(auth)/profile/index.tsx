@@ -35,6 +35,11 @@ const Profile = () => {
     }
   };
 
+  const handleSignOut = async () => {
+    await signOut();
+    router.replace('/');
+  };
+
   return (
     <View className='px-12 mt-6'>
       <View className='flex-row items-center gap-4'>
@@ -65,7 +70,7 @@ const Profile = () => {
       </View>
       <View className='mt-12'>
         <TouchableOpacity
-          onPress={() => signOut}
+          onPress={handleSignOut}
           className='items-center justify-center'
         >
           <Text className='text-lg text-accent'>Sign Out</Text>
