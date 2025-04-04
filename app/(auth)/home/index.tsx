@@ -6,7 +6,7 @@ import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import { useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
 const Page = () => {
   const db = useSQLiteContext();
@@ -24,11 +24,20 @@ const Page = () => {
   return (
     <>
       <FlatList
-        contentContainerClassName='mt-4'
+        contentContainerClassName='flex-1'
         data={data}
         renderItem={({ item }) => <ShoppingListCard {...item} />}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ padding: 16, gap: 16 }}
+        contentContainerStyle={{ padding: 16, gap: 16, marginTop: 4 }}
+        ListEmptyComponent={() => (
+          <View className='items-center justify-center h-full -mt-4'>
+            <TouchableOpacity onPress={() => router.push('/home/new-list')}>
+              <Text className='text-2xl text-accent'>
+                Get started with your first list
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       />
       <Fab onPress={handleFab} />
     </>
