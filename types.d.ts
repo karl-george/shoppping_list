@@ -10,7 +10,7 @@ export interface ShoppingLists {
 export interface Product {
   id: number;
   name: string;
-  isChecked?: boolean;
+  isChecked?: number;
   quantity?: number;
   date_added?: number;
   date_updated?: number;
