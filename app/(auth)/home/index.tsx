@@ -29,9 +29,6 @@ const Page = () => {
         renderItem={({ item }) => <ShoppingListCard {...item} />}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ padding: 16, gap: 16 }}
-        ItemSeparatorComponent={() => (
-          <View className='h-0.5 bg-textFaded mt-3' />
-        )}
       />
       <Fab onPress={handleFab} />
     </>
