@@ -34,7 +34,15 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "shopping-list",
+          "organization": "other-b2b"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
