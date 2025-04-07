@@ -8,6 +8,9 @@ import { useSQLiteContext } from 'expo-sqlite';
 import React from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 
+// Todo: Add haptics
+// Todo: Add list reorganising (Let user change the order of the lists (via long press and drag?))
+
 const Page = () => {
   const db = useSQLiteContext();
   const drizzleDb = drizzle(db);
