@@ -32,7 +32,7 @@ export default function Index() {
         await startSSOFlow({
           strategy: 'oauth_google',
           redirectUrl: AuthSession.makeRedirectUri({
-            path: '/(auth)',
+            path: '/(auth)/home',
           }),
         });
 
@@ -52,7 +52,7 @@ export default function Index() {
         await startSSOFlow({
           strategy: 'oauth_apple',
           redirectUrl: AuthSession.makeRedirectUri({
-            path: '/(auth)',
+            path: '/(auth)/home',
           }),
         });
 
